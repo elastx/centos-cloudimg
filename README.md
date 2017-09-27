@@ -1,4 +1,4 @@
-# CentOS 7 Cloudimg
+# CentOS Cloudimg
 
 This git repo contain Packer and kickstart files to define and build CentOS cloud images optimized for [Elastx OpenStack IaaS](https://elastx.se).
 
@@ -6,11 +6,9 @@ This git repo contain Packer and kickstart files to define and build CentOS clou
 
 ## Prerequisites
 
-1. `virtinst` package installed on your system.
+1. `qemu-kvm` and a working installation of [Packer](https://www.packer.io/). Tested version is **v1.1.0**.
 
-2. A working installation of [Packer](https://www.packer.io/). Tested version is **v1.1.0**.
-
-3. `curl` and `sed` already installed on your system if you want to dynamically build from latest CentOS 7 rolling upgrade release.
+2. `curl` and `sed` already installed on your system if you want to dynamically build from latest CentOS 7 rolling upgrade release.
 
 ## Building the image
 
