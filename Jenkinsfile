@@ -15,16 +15,25 @@ pipeline {
       steps {
         sh "packer build -var centos7_image=${CENTOS7_VERSION} build-cloudimg.json"
       }
+      post {
+        success {
+          archive 'build/*.qcow2c'
+        }
+      }
     }
   }
+
   post {
-    success {
-      archive 'build/*.qcow2c'
-    }
     always {
       dir("$WORKSPACE") {
         deleteDir()
       }
     }
   }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+    timeout(time: 60, unit: 'MINUTES')
+  }
+
 }
