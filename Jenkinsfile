@@ -17,7 +17,7 @@ pipeline {
       }
       post {
         success {
-          archive 'build/*.qcow2c'
+          archive 'build/*'
         }
       }
     }
