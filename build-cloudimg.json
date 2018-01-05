@@ -20,7 +20,7 @@
       "http_directory": "httpdir",
       "http_port_min": 10082,
       "http_port_max": 10089,
-      "vm_name": "{{user `centos7_image`}}.qcow2c",
+      "vm_name": "centos-7-latest",
       "net_device": "virtio-net",
       "disk_interface": "virtio",
       "boot_wait": "5s",
