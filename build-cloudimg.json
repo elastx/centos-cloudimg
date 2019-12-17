@@ -20,12 +20,42 @@
       "http_directory": "httpdir",
       "http_port_min": 10082,
       "http_port_max": 10089,
+      "name": "centos-7",
       "vm_name": "centos-7-latest",
       "net_device": "virtio-net",
       "disk_interface": "virtio",
       "boot_wait": "5s",
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-7-ext4.ks<enter><wait>"
+      ],
+      "qemuargs": [
+        ["-m", "1024M"]
+      ]
+    },
+    {
+      "type": "qemu",
+      "iso_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CentOS-Stream-x86_64-boot.iso",
+      "iso_checksum_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM",
+      "iso_checksum_type": "sha256",
+      "output_directory": "build",
+      "communicator": "none",
+      "shutdown_command": "",
+      "shutdown_timeout": "20m",
+      "disk_size": 5000,
+      "format": "qcow2",
+      "disk_compression": true,
+      "headless": true,
+      "accelerator": "kvm",
+      "http_directory": "httpdir",
+      "http_port_min": 10082,
+      "http_port_max": 10089,
+      "name": "centos-8",
+      "vm_name": "centos-8-latest",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-8-ext4.ks<enter><wait>"
       ],
       "qemuargs": [
         ["-m", "1024M"]
