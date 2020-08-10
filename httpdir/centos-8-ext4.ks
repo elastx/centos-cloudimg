@@ -110,6 +110,9 @@ rm -rf /root/original-ks.cfg
 rm -rf /var/log/anaconda*
 rm -rf /root/anac*
 
+# remove resolve.conf
+rm -f /etc/resolv.conf
+
 #echo "Zeroing out empty space."
 # This forces the filesystem to reclaim space from deleted files
 dd bs=1M if=/dev/zero of=/var/tmp/zeros || :
