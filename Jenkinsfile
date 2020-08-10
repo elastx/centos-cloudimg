@@ -8,12 +8,16 @@ pipeline {
       script: 'curl -s http://mirror.centos.org/centos/7/isos/x86_64/sha256sum.txt | sed -n "s/^.*\\(CentOS-7-x86_64-Minimal-[0-9]\\+\\)\\.iso.*$/\\1/p"',
       returnStdout: true
     ).trim()
+    CENTOS8_VERSION = sh(
+      script: 'curl -s http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM | sed -n "1s/^.*\(CentOS-Stream-8-x86_64-[0-9]\+\)\-boot.iso.*$/\1/p"',
+      returnStdout: true
+    ).trim()
   }
 
   stages {
     stage('Build images') {
       steps {
-        sh "packer build -var centos7_image=${CENTOS7_VERSION} build-cloudimg.json"
+        sh "packer build -var centos7_image=${CENTOS7_VERSION} -var centos8_image=${CENTOS8_VERSION} build-cloudimg.json"
       }
       post {
         success {
