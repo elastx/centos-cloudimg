@@ -18,6 +18,7 @@ Execute the following command to build your image.
 
     packer build \
       -var centos7_image=$(curl -s http://mirror.centos.org/centos/7/isos/x86_64/sha256sum.txt | sed -n "s/^.*\(CentOS-7-x86_64-Minimal-[0-9]\+\)\.iso.*$/\1/p") \
+      -var centos8_image=$(curl -s http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM | sed -n "1s/^.*\(CentOS-Stream-8-x86_64-[0-9]\+\)\-boot.iso.*$/\1/p") \
       build-cloudimg.json
 
 The image will be located in **build** directory.
