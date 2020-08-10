@@ -1,6 +1,7 @@
 {
   "variables": {
-    "centos7_image": ""
+    "centos7_image": "",
+    "centos8_image": ""
   },
   "builders": [
     {
@@ -34,7 +35,7 @@
     },
     {
       "type": "qemu",
-      "iso_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CentOS-Stream-x86_64-boot.iso",
+      "iso_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/C{{user `centos8_image`}}-boot.iso",
       "iso_checksum_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM",
       "iso_checksum_type": "sha256",
       "output_directory": "build",
