@@ -1,2 +1,4 @@
-build/*
+images/*
 packer_cache/*
+packer
+manifest.json

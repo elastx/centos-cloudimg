@@ -1,72 +1,77 @@
 {
-  "variables": {
-    "centos7_image": ""
-  },
   "builders": [
     {
-      "type": "qemu",
-      "iso_url": "http://mirror.nsc.liu.se/CentOS/7/isos/x86_64/{{user `centos7_image`}}.iso",
-      "iso_checksum_url": "http://mirror.centos.org/centos/7/isos/x86_64/sha256sum.txt",
-      "iso_checksum_type": "sha256",
-      "output_directory": "build",
-      "communicator": "none",
-      "shutdown_command": "",
-      "shutdown_timeout": "20m",
-      "disk_size": 5000,
-      "format": "qcow2",
-      "disk_compression": true,
-      "headless": true,
       "accelerator": "kvm",
-      "http_directory": "httpdir",
-      "http_port_min": 10082,
-      "http_port_max": 10089,
-      "name": "centos-7",
-      "vm_name": "centos-7-latest",
-      "net_device": "virtio-net",
-      "disk_interface": "virtio",
-      "boot_wait": "5s",
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-7-ext4.ks<enter><wait>"
       ],
-      "qemuargs": [
-        ["-m", "1024M"]
-      ]
-    },
-    {
-      "type": "qemu",
-      "iso_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CentOS-Stream-x86_64-boot.iso",
-      "iso_checksum_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM",
-      "iso_checksum_type": "sha256",
-      "output_directory": "build",
+      "boot_wait": "5s",
       "communicator": "none",
-      "shutdown_command": "",
-      "shutdown_timeout": "20m",
+      "disk_compression": true,
+      "disk_interface": "virtio",
       "disk_size": 5000,
       "format": "qcow2",
-      "disk_compression": true,
       "headless": true,
-      "accelerator": "kvm",
       "http_directory": "httpdir",
-      "http_port_min": 10082,
       "http_port_max": 10089,
-      "name": "centos-8",
-      "vm_name": "centos-8-latest",
+      "http_port_min": 10082,
+      "iso_checksum": "file:http://mirror.nsc.liu.se/centos/7/isos/x86_64/sha256sum.txt",
+      "iso_url": "http://mirror.nsc.liu.se/CentOS/7/isos/x86_64/{{user `centos7_image`}}",
+      "name": "centos-7",
       "net_device": "virtio-net",
-      "disk_interface": "virtio",
-      "boot_wait": "5s",
+      "output_directory": "images",
+      "qemuargs": [
+        [
+          "-m",
+          "1024M"
+        ]
+      ],
+      "shutdown_command": "",
+      "shutdown_timeout": "20m",
+      "type": "qemu",
+      "vm_name": "centos-7-latest"
+    },
+    {
+      "accelerator": "kvm",
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-8-ext4.ks<enter><wait>"
       ],
+      "boot_wait": "5s",
+      "communicator": "none",
+      "disk_compression": true,
+      "disk_interface": "virtio",
+      "disk_size": 5000,
+      "format": "qcow2",
+      "headless": true,
+      "http_directory": "httpdir",
+      "http_port_max": 10089,
+      "http_port_min": 10082,
+      "iso_checksum": "file:http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM",
+      "iso_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/{{ user `centos8_image`}}",
+      "name": "centos-8",
+      "net_device": "virtio-net",
+      "output_directory": "images",
       "qemuargs": [
-        ["-m", "1024M"]
-      ]
+        [
+          "-m",
+          "1024M"
+        ]
+      ],
+      "shutdown_command": "",
+      "shutdown_timeout": "20m",
+      "type": "qemu",
+      "vm_name": "centos-8-latest"
     }
   ],
   "post-processors": [
     {
-      "type": "manifest",
       "output": "manifest.json",
-      "strip_path": true
+      "strip_path": true,
+      "type": "manifest"
     }
-  ]
+  ],
+  "variables": {
+    "centos7_image": "",
+    "centos8_image": ""
+  }
 }
