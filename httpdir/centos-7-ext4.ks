@@ -62,6 +62,9 @@ NETWORKING=yes
 NOZEROCONF=yes
 EOF
 
+# Remove build-time resolvers to fix #16948
+echo > /etc/resolv.conf
+
 # For cloud images, 'eth0' _is_ the predictable device name, since
 # we don't want to be tied to specific virtual (!) hardware
 rm -f /etc/udev/rules.d/70*
