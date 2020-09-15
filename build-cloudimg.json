@@ -17,7 +17,7 @@
       "http_port_min": 10082,
       "iso_checksum": "file:http://mirror.nsc.liu.se/centos/7/isos/x86_64/sha256sum.txt",
       "iso_url": "http://mirror.nsc.liu.se/CentOS/7/isos/x86_64/{{user `centos7_image`}}",
-      "name": "centos-7",
+      "name": "centos-7-latest",
       "net_device": "virtio-net",
       "output_directory": "images",
       "qemuargs": [
@@ -48,7 +48,7 @@
       "http_port_min": 10082,
       "iso_checksum": "file:http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM",
       "iso_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/{{ user `centos8_image`}}",
-      "name": "centos-8",
+      "name": "centos-8-latest",
       "net_device": "virtio-net",
       "output_directory": "images",
       "qemuargs": [
