@@ -1,5 +1,5 @@
 
-PACKER_VERSION=1.6.1
+PACKER_VERSION=1.6.2
 PACKER_DOWNLOAD_BASE_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}
 PACKER_CHECKSUM=packer_${PACKER_VERSION}_SHA256SUMS
 UNAME_S := $(shell uname -s | tr A-Z a-z)
@@ -23,7 +23,7 @@ ifneq (${PACKER_INSTALLED_VERSION},${PACKER_VERSION})
 	curl -o ${PACKER_BIN} -fSL "${PACKER_DOWNLOAD_BASE_URL}/${PACKER_BIN}"
 	curl -o ${PACKER_CHECKSUM} -fSL "${PACKER_DOWNLOAD_BASE_URL}/${PACKER_CHECKSUM}"
 	sha256sum -c --ignore-missing ${PACKER_CHECKSUM}
-	unzip ${PACKER_BIN}
+	unzip -o ${PACKER_BIN} packer
 	rm -f ${PACKER_BIN} ${PACKER_CHECKSUM}
 endif
 
