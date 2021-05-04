@@ -12,7 +12,7 @@ These prerequisites are written for Ubuntu 20.04.
 
 2. `curl` and `sed` already installed on your system if you want to dynamically build from latest rolling upgrade release.
 
-3. For testing you also need `mtools`.
+3. For testing you also need `mtools` and optionally `tigervnc-viewer`.
 
 ## Building the image
 
@@ -50,3 +50,13 @@ executing `rm -iv images/*-test.img`.
 The username / password is set to be `centos` / `centos` in the test
 environment. It will have internet access, and you can SSH into the instance
 by running `ssh -o NoHostAuthenticationForLocalhost=yes -p 5555 localhost -l centos`.
+
+### Debugging
+
+Sadly `packer` relies heavily on VNC for their QEMU integration and thus you need
+to use VNC to access the terminal to read logs. This is very silly and not great.
+There is a PR available (#4) for exporting log files instead, but it is not ready
+right now.
+
+To connect to the debug terminal, see the log message from `packer` to see what port
+QEMU is listening. Example: `vncviewer 127.0.0.1:5975`.
