@@ -40,7 +40,7 @@
     },
     {
       "type": "shell-local",
-      "inline": ["mv images/build-centos-7-latest/centos-7-latest centos-7-latest"]
+      "inline": ["mv images/build-centos-7-latest/centos-7-latest images/centos-7-latest"]
     }
   ],
   "variables": {
