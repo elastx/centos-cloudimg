@@ -19,7 +19,10 @@ endif
 
 
 .PHONY: default
-default: clean prepare build
+default: clean prepare images/centos-7-latest images/centos-8-latest
+
+.PHONY: all
+all: clean-cache default
 
 .PHONY: clean
 clean:
@@ -39,12 +42,17 @@ ifneq (${PACKER_INSTALLED_VERSION},${PACKER_VERSION})
 	rm -f ${PACKER_BIN} ${PACKER_CHECKSUM}
 endif
 
-.PHONY: build
-build:
+images/centos-7-latest: build-centos-7.json httpdir/centos-7-ext4.ks
 	./packer build \
+		-force \
 		-var centos7_image=${CENTOS7_IMAGE} \
+		"$<"
+
+images/centos-8-latest: build-centos-8.json httpdir/centos-8-ext4.ks
+	./packer build \
+		-force \
 		-var centos8_image=${CENTOS8_IMAGE} \
-		build-cloudimg.json
+		"$<"
 
 images/%-test.img: images/%
 	qemu-img create -f qcow2 \
@@ -68,6 +76,3 @@ run-%: images/%-latest-test.img images/cloudconfig-test.img
 		-serial mon:stdio \
 		-no-reboot \
 		-nographic \
-
-.PHONY: all
-all: clean clean-cache prepare build
