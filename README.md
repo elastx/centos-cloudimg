@@ -49,4 +49,4 @@ executing `rm -iv images/*-test.img`.
 
 The username / password is set to be `centos` / `centos` in the test
 environment. It will have internet access, and you can SSH into the instance
-by running `ssh -o StrictHostKeyChecking=no -p 5555 localhost -l centos`.
+by running `ssh -o NoHostAuthenticationForLocalhost=yes -p 5555 localhost -l centos`.
