@@ -8,9 +8,11 @@ This git repo contain Packer and kickstart files to define and build CentOS clou
 ## Prerequisites
 These prerequisites are written for Ubuntu 20.04.
 
-1. `qemu-system-x86`, `qemu-utils` and a working installation of [Packer](https://www.packer.io/). Tested version is **v1.6.2**.
+1. `qemu-system-x86`, `qemu-utils` and a working installation of [Packer](https://www.packer.io/). Tested version is **v1.7.2**.
 
 2. `curl` and `sed` already installed on your system if you want to dynamically build from latest rolling upgrade release.
+
+3. For testing you also need `mtools`.
 
 ## Building the image
 
