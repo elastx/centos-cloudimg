@@ -1,0 +1,9 @@
+#cloud-config
+
+users:
+- name: centos
+  lock-passwd: false
+  groups: wheel
+  # Password is 'centos'
+  passwd: $6$JyHlhupoD9$4tLYQCdIqaN1bBOpN95r7US/.dYsYk4/twEpeaPeZWvs48l.etcn4y828BaPpM/FrZv5y63josa0VwU3xhj2G/
+ssh_pwauth: True
