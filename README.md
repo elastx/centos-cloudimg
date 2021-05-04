@@ -12,7 +12,7 @@ These prerequisites are written for Ubuntu 20.04.
 
 2. `curl` and `sed` already installed on your system if you want to dynamically build from latest rolling upgrade release.
 
-3. For testing you also need `mtools`.
+3. For testing you also need `mtools` and possibly `tigervnc-viewer`.
 
 ## Building the image
 
@@ -20,18 +20,19 @@ The images built with Packer will be located in **images** directory.
 
 ### Make
 
-If you have `make` installed you can simply run `make` to build images.
+If you have `make` installed you can simply run `make -j$(nproc)` to build images.
 
 ### Shell
 
 In case you are located outside of Sweden, or if the mirror is down, you will want to change value for `iso_url` and `iso_checksum` inside **build-cloudimg.json** to an address closer to your location.
 
-Execute the following command to build your image.
+Execute the following command to e.g. build the CentOS 7 image:
 
-    packer build \
-      -var centos7_image=$(curl -s http://mirror.nsc.liu.se/centos/7/isos/x86_64/sha256sum.txt | sed -n "s/^.*\(CentOS-7-x86_64-Minimal-[0-9]\+\.iso\).*$/\1/p") \
-      -var centos8_image=$(curl -s http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM | sed -n "s/^SHA256 (\(CentOS-Stream-8-x86_64-[0-9]\+-boot\.iso\)).*$/\1/p")
-      build-cloudimg.json
+```shell
+packer build \
+  -var centos7_image=$(curl -s http://mirror.nsc.liu.se/centos/7/isos/x86_64/sha256sum.txt | sed -n "s/^.*\(CentOS-7-x86_64-Minimal-[0-9]\+\.iso\).*$/\1/p") \
+  build-centos-7.json
+```
 
 ## Testing the image
 
@@ -50,3 +51,10 @@ executing `rm -iv images/*-test.img`.
 The username / password is set to be `centos` / `centos` in the test
 environment. It will have internet access, and you can SSH into the instance
 by running `ssh -o NoHostAuthenticationForLocalhost=yes -p 5555 localhost -l centos`.
+
+### Debugging
+
+Packer sadly relies heavily on VNC for QEMU integration, but we have hacked
+around it by redirecting the installation output to a virtual serial port which
+is stored as a file in `images/centos-X-latest.log`. You can `cat` or `tail -f` it
+to see the installation progress or debug a stuck build.

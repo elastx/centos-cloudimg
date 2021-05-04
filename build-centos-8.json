@@ -1,0 +1,49 @@
+{
+  "builders": [
+    {
+      "accelerator": "kvm",
+      "boot_command": [
+        "<tab> console=ttyS0,115200n8 text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-8-ext4.ks<enter><wait>"
+      ],
+      "boot_wait": "5s",
+      "communicator": "none",
+      "disk_compression": true,
+      "disk_interface": "virtio",
+      "disk_size": 5000,
+      "format": "qcow2",
+      "headless": true,
+      "http_directory": "httpdir",
+      "http_port_max": 10089,
+      "http_port_min": 10082,
+      "iso_checksum": "file:http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM",
+      "iso_url": "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/{{ user `centos8_image`}}",
+      "name": "centos-8-latest",
+      "net_device": "virtio-net",
+      "output_directory": "images/build-centos-8-latest",
+      "qemuargs": [
+        [ "-m", "1024M" ],
+        [ "-smp", "4,sockets=1,cores=2,threads=2"],
+        [ "-chardev", "file,id=log,path=images/centos-8-latest.log"],
+        [ "-device", "isa-serial,chardev=log"]
+      ],
+      "shutdown_command": "",
+      "shutdown_timeout": "20m",
+      "type": "qemu",
+      "vm_name": "centos-8-latest"
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "manifest.json",
+      "strip_path": true,
+      "type": "manifest"
+    },
+    {
+      "type": "shell-local",
+      "inline": ["mv images/build-centos-8-latest/centos-8-latest centos-8-latest"]
+    }
+  ],
+  "variables": {
+    "centos8_image": ""
+  }
+}
