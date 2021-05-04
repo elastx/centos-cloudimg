@@ -1,5 +1,5 @@
 
-PACKER_VERSION=1.6.2
+PACKER_VERSION=1.7.2
 PACKER_DOWNLOAD_BASE_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}
 PACKER_CHECKSUM=packer_${PACKER_VERSION}_SHA256SUMS
 UNAME_S := $(shell uname -s | tr A-Z a-z)
