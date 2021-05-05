@@ -21,7 +21,7 @@ timezone UTC --isUtc
 # Disk
 bootloader --append="console=tty0" --location=mbr --timeout=1 --boot-drive=vda
 zerombr
-clearpart --all --initlabel 
+clearpart --all --initlabel
 part / --fstype="ext4" --ondisk=vda --size=4096 --grow
 
 %post --erroronfail
@@ -47,6 +47,9 @@ ln -sf /boot/grub/grub.conf /etc/grub.conf
 rm -f /etc/systemd/system/default.target
 ln -s /lib/systemd/system/multi-user.target /etc/systemd/system/default.target
 echo .
+
+# Mitigate CVE-2021-20271 (https://github.com/elastx/team-infra/issues/175)
+sed -i '/^gpgcheck=.*/a repo_gpgcheck=1' /etc/yum.conf
 
 yum -C -y remove linux-firmware
 
