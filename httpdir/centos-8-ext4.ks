@@ -119,6 +119,9 @@ echo "RUN_FIRSTBOOT=NO" > /etc/sysconfig/firstboot
 echo -e 'centos\tALL=(ALL)\tNOPASSWD: ALL' >> /etc/sudoers
 sed -i 's/name: cloud-user/name: centos/g' /etc/cloud/cloud.cfg
 
+# Mitigate CVE-2021-20271 (https://github.com/elastx/team-infra/issues/175)
+echo '%_pkgverify_level all' > /etc/rpm/macros
+
 echo "Cleaning old yum repodata."
 dnf clean all
 
