@@ -1,28 +1,30 @@
+text
 auth --enableshadow --passalgo=sha512
 shutdown
-url --url="http://mirror.centos.org/centos/7/os/x86_64"
 firewall --enabled --service=ssh
 firstboot --disable
 ignoredisk --only-use=vda
-keyboard --vckeymap=us --xlayouts='us'
+keyboard us
 # System language
 lang en_US.UTF-8
-repo --name "os" --baseurl="http://mirror.centos.org/centos/7/os/x86_64/" --cost=100
-repo --name "updates" --baseurl="http://mirror.centos.org/centos/7/updates/x86_64/" --cost=100
-repo --name "extras" --baseurl="http://mirror.centos.org/centos/7/extras/x86_64/" --cost=100
+# Installation source
+url --url http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+repo --name=AppStream --baseurl=http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/ --cost=100
+repo --name=extras --baseurl=http://mirror.centos.org/centos/8-stream/extras/x86_64/os/ --cost=100
 # Network information
-network  --bootproto=dhcp
+network  --bootproto=dhcp --device=link --activate --onboot=on
 network  --hostname=localhost.localdomain
 # Root password
 rootpw --iscrypted thereisnopasswordanditslocked
 selinux --enforcing
-services --disabled="kdump" --enabled="network,sshd,rsyslog,chronyd"
+services --disabled="kdump" --enabled="NetworkManager,sshd,rsyslog,chronyd,cloud-init,cloud-init-local,cloud-config,cloud-final,rngd"
 timezone UTC --isUtc
 # Disk
-bootloader --append="console=tty0" --location=mbr --timeout=1 --boot-drive=vda
+bootloader --append="console=ttyS0,115200n8 no_timer_check crashkernel=auto net.ifnames=0" --location=mbr --timeout=1 --boot-drive=vda
 zerombr
 clearpart --all --initlabel
-part / --fstype="ext4" --ondisk=vda --size=4096 --grow
+reqpart
+part / --fstype="ext4" --ondisk=vda --size=5000 --grow
 
 %post --erroronfail
 passwd -d root
@@ -34,7 +36,7 @@ rootuuid=$( awk '$2=="/" { print $1 };'  /etc/fstab )
 mkdir /boot/grub
 echo -e 'default=0\ntimeout=0\n\n' > /boot/grub/grub.conf
 for kv in $( ls -1v /boot/vmlinuz* |grep -v rescue |sed s/.*vmlinuz-//  ); do
-  echo "title CentOS Linux 7 ($kv)" >> /boot/grub/grub.conf
+  echo "title CentOS Stream 8 ($kv)" >> /boot/grub/grub.conf
   echo -e "\troot (hd0)" >> /boot/grub/grub.conf
   echo -e "\tkernel /boot/vmlinuz-$kv ro root=$rootuuid console=hvc0 LANG=en_US.UTF-8" >> /boot/grub/grub.conf
   echo -e "\tinitrd /boot/initramfs-$kv.img" >> /boot/grub/grub.conf
@@ -48,15 +50,12 @@ rm -f /etc/systemd/system/default.target
 ln -s /lib/systemd/system/multi-user.target /etc/systemd/system/default.target
 echo .
 
-# Mitigate CVE-2021-20271 (https://github.com/elastx/team-infra/issues/175)
-sed -i '/^gpgcheck=.*/a repo_gpgcheck=1' /etc/yum.conf
-
-yum -C -y remove linux-firmware
+dnf -C -y remove linux-firmware
 
 # Remove firewalld; it is required to be present for install/image building.
 # but we dont ship it in cloud
-yum -C -y remove firewalld --setopt="clean_requirements_on_remove=1"
-yum -C -y remove avahi\* Network\*
+dnf -C -y remove firewalld --setopt="clean_requirements_on_remove=1"
+dnf -C -y remove avahi\*
 sed -i '/^#NAutoVTs=.*/ a\
 NAutoVTs=0' /etc/systemd/logind.conf
 
@@ -109,7 +108,11 @@ EOL
 # make sure firstboot doesn't start
 echo "RUN_FIRSTBOOT=NO" > /etc/sysconfig/firstboot
 
-yum clean all
+# centos cloud user
+echo -e 'centos\tALL=(ALL)\tNOPASSWD: ALL' >> /etc/sudoers
+sed -i 's/name: cloud-user/name: centos/g' /etc/cloud/cloud.cfg
+
+dnf clean all
 
 # XXX instance type markers - MUST match CentOS Infra expectation
 echo 'genclo' > /etc/yum/vars/infra
@@ -121,37 +124,60 @@ timeout 300;
 retry 60;
 EOF
 
+
+rm -rf /var/log/yum.log
+rm -rf /var/lib/yum/*
+rm -rf /root/install.log
+rm -rf /root/install.log.syslog
+rm -rf /root/anaconda-ks.cfg
+rm -rf /var/log/anaconda*
+
+rm -f /var/lib/systemd/random-seed
+
+cat /dev/null > /etc/machine-id
+
 echo "Fixing SELinux contexts."
 touch /var/log/cron
 touch /var/log/boot.log
 mkdir -p /var/cache/yum
-/usr/sbin/fixfiles -R -a restore
+/usr/sbin/fixfiles -R -a restore ||:
 
 # reorder console entries
 sed -i 's/console=tty0/console=tty0 console=ttyS0,115200n8/' /boot/grub2/grub.cfg
+
+#echo "Zeroing out empty space."
+# This forces the filesystem to reclaim space from deleted files
+dd bs=1M if=/dev/zero of=/var/tmp/zeros || :
+rm -f /var/tmp/zeros
+echo "(Don't worry -- that out-of-space error was expected.)"
+
+true
+
 %end
 
 %packages
 @core
 chrony
+dnf
+yum
 cloud-init
 cloud-utils-growpart
+NetworkManager
 dracut-config-generic
 dracut-norescue
 firewalld
+gdisk
 grub2
 kernel
 nfs-utils
 rsync
 tar
+dnf-utils
 yum-utils
--NetworkManager
 -aic94xx-firmware
 -alsa-firmware
 -alsa-lib
 -alsa-tools-firmware
--biosdevname
--iprutils
 -ivtv-firmware
 -iwl100-firmware
 -iwl1000-firmware
@@ -172,6 +198,19 @@ yum-utils
 -libertas-sd8686-firmware
 -libertas-sd8787-firmware
 -libertas-usb8388-firmware
+-biosdevname
+-iprutils
 -plymouth
 
+python3-jsonschema
+qemu-guest-agent
+dhcp-client
+cockpit-ws
+cockpit-system
+-langpacks-*
+-langpacks-en
+
+centos-release
+rng-tools
 %end
+

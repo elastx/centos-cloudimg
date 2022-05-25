@@ -2,8 +2,9 @@
 
 This git repo contain Packer and kickstart files to define and build CentOS cloud images optimized for [Elastx OpenStack IaaS](https://elastx.se).
 
-- [centos-7-ext4.ks](httpdir/centos-7-ext4.ks) is based on the kickstarter file used for building official CentOS 7 cloud image ([source](https://git.centos.org/centos/kickstarts/blob/master/f/CentOS-7-GenericCloud.ks)).
-- [centos-8-ext4.ks](httpdir/centos-8-ext4.ks) is based on the kickstarter file used for building official CentOS 8 cloud image ([source](https://git.centos.org/centos/kickstarts/blob/master/f/CentOS-8-Stream-GenericCloud.ks)).
+- [centos8-ext4.ks](httpdir/centos8-ext4.ks) is based on the kickstart file used for building official CentOS 8 Stream cloud image ([source](https://git.centos.org/centos/kickstarts/blob/master/f/CentOS-8-Stream-GenericCloud.ks)).
+- [centos9-ext4.ks](httpdir/centos9-ext4.ks) is based on the kickstart file used for building official CentOS 9 Stream cloud image ([source](https://gitlab.com/redhat/centos-stream/release-engineering/kickstarts/-/blob/main/CentOS-Stream-9-kvm-x86_64.ks)).
+- [rocky8-ext4.ks](httpdir/rocky8-ext4.ks) is based on the kickstart file used for building official Rocky 8 images ([source](https://git.rockylinux.org/rocky/kickstarts/-/blob/r8/Rocky-8-GenericCloud.ks)).
 
 ## Prerequisites
 These prerequisites are written for Ubuntu 20.04.
@@ -12,7 +13,7 @@ These prerequisites are written for Ubuntu 20.04.
 
 2. `curl` and `sed` already installed on your system if you want to dynamically build from latest rolling upgrade release.
 
-3. For testing you also need `mtools` and optionally `tigervnc-viewer`.
+3. For testing you also need `mtools` and optionally `tigervnc-viewer`, `remmina` or any other VNC viewer.
 
 ## Building the image
 
@@ -20,7 +21,7 @@ The images built with Packer will be located in **images** directory.
 
 ### Make
 
-If you have `make` installed you can simply run `make` to build images.
+If you have `make` installed you can simply run `make` and `make build-centos8` to build a Centos 8 Stream image.
 
 ### Shell
 
@@ -29,9 +30,9 @@ In case you are located outside of Sweden, or if the mirror is down, you will wa
 Execute the following command to build your image.
 
     packer build \
-      -var centos7_image=$(curl -s http://mirror.nsc.liu.se/centos/7/isos/x86_64/sha256sum.txt | sed -n "s/^.*\(CentOS-7-x86_64-Minimal-[0-9]\+\.iso\).*$/\1/p") \
-      -var centos8_image=$(curl -s http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM | sed -n "s/^SHA256 (\(CentOS-Stream-8-x86_64-[0-9]\+-boot\.iso\)).*$/\1/p")
-      build-cloudimg.json
+      -var iso_url="http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-latest-boot.iso" \
+      -var iso_checksum="file:http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM" \
+      centos8.pkr.hcl
 
 ## Testing the image
 
