@@ -33,7 +33,7 @@ source "qemu" "centos8" {
   boot_command      = ["<tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos8-ext4.ks<enter><wait>"]
   qemuargs          = [
     [ "-m", "2048" ],
-    [ "--cpu", "host" ]
+    [ "--cpu", "kvm64" ]
   ]
 }
 

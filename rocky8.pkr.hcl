@@ -33,7 +33,7 @@ source "qemu" "rocky8" {
   boot_command      = ["<tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rocky8-ext4.ks<enter><wait>"]
   qemuargs          = [
     [ "-m", "2048" ],
-    [ "--cpu", "host" ]
+    [ "--cpu", "kvm64" ]
   ]
 }
 
