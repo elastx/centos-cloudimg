@@ -23,7 +23,7 @@ source "qemu" "rocky8" {
   http_directory    = "httpdir"
   headless          = "true"
   communicator      = "none"
-  shutdown_timeout  = "30m"
+  shutdown_timeout  = "60m"
   vm_name           = "rocky-8-latest-ext4"
   net_device        = "virtio-net"
   disk_interface    = "virtio"
