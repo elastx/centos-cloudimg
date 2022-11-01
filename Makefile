@@ -18,13 +18,13 @@ clean-cache:
 clean-packer:
 	rm -rf ${HOME}/.config/packer/
 
-build-centos8:
-	PACKER_LOG=1 packer build centos8.pkr.hcl
+build-centos-8:
+	PACKER_LOG=1 packer build centos-8.pkr.hcl
 
-build-centos9:
-	PACKER_LOG=1 packer build centos9.pkr.hcl
+build-centos-9:
+	PACKER_LOG=1 packer build centos-9.pkr.hcl
 
-build-rocky8:
-	PACKER_LOG=1 packer build rocky8.pkr.hcl
+build-rocky-8:
+	PACKER_LOG=1 packer build rocky-8.pkr.hcl
 
 all: clean clean-cache install_deps prepare

@@ -1,16 +1,16 @@
 variable "iso_url" {
   type    = string
   // This can be a local file or URL
-  default = "https://download.rockylinux.org/pub/rocky/8/isos/x86_64/Rocky-8.6-x86_64-boot.iso"
+  default = "http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-latest-boot.iso"
 }
 
 variable "iso_checksum" {
   type    = string
   // This can be a local file, URL or a specific checksum
-  default = "file:https://download.rockylinux.org/pub/rocky/8/isos/x86_64/CHECKSUM"
+  default = "file:http://mirror.nsc.liu.se/CentOS/8-stream/isos/x86_64/CHECKSUM"
 }
 
-source "qemu" "rocky8" {
+source "qemu" "centos8" {
   iso_url           = "${var.iso_url}"
   iso_checksum      = "${var.iso_checksum}"
   output_directory  = "images"
@@ -24,13 +24,13 @@ source "qemu" "rocky8" {
   headless          = "true"
   communicator      = "none"
   shutdown_timeout  = "30m"
-  vm_name           = "rocky8-latest-ext4"
+  vm_name           = "centos-8-latest-ext4"
   net_device        = "virtio-net"
   disk_interface    = "virtio"
   skip_compaction   = "false"
   disk_compression  = "true"
   boot_wait         = "10s"
-  boot_command      = ["<tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rocky8-ext4.ks<enter><wait>"]
+  boot_command      = ["<tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos8-ext4.ks<enter><wait>"]
   qemuargs          = [
     [ "-m", "2048" ],
     [ "--cpu", "kvm64" ]
@@ -38,5 +38,5 @@ source "qemu" "rocky8" {
 }
 
 build {
-  sources = ["source.qemu.rocky8"]
+  sources = ["source.qemu.centos8"]
 }

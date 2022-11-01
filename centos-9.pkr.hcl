@@ -24,7 +24,7 @@ source "qemu" "centos9" {
   headless          = "true"
   communicator      = "none"
   shutdown_timeout  = "30m"
-  vm_name           = "centos9-latest-ext4"
+  vm_name           = "centos-9-latest-ext4"
   net_device        = "virtio-net"
   disk_interface    = "virtio"
   skip_compaction   = "false"
