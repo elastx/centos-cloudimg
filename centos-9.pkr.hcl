@@ -10,6 +10,12 @@ variable "iso_checksum" {
   default = "file:http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/iso/CentOS-Stream-9-latest-x86_64-boot.iso.SHA256SUM"
 }
 
+variable "cpu_flag" {
+  type    = string
+  // List available host flags with: qemu-system-x86_64 -enable-kvm -cpu help
+  default = "host"
+}
+
 source "qemu" "centos9" {
   iso_url           = "${var.iso_url}"
   iso_checksum      = "${var.iso_checksum}"
@@ -33,7 +39,7 @@ source "qemu" "centos9" {
   boot_command      = ["<tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos9-ext4.ks<enter><wait>"]
   qemuargs          = [
     [ "-m", "2048" ],
-    [ "--cpu", "kvm64" ]
+    [ "--cpu", "${var.cpu_flag}" ]
   ]
 }
 

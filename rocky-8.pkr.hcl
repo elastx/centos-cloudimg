@@ -10,6 +10,12 @@ variable "iso_checksum" {
   default = "file:https://download.rockylinux.org/pub/rocky/8/isos/x86_64/CHECKSUM"
 }
 
+variable "cpu_flag" {
+  type    = string
+  // List available host flags with: qemu-system-x86_64 -enable-kvm -cpu help
+  default = "host"
+}
+
 source "qemu" "rocky8" {
   iso_url           = "${var.iso_url}"
   iso_checksum      = "${var.iso_checksum}"
@@ -33,7 +39,7 @@ source "qemu" "rocky8" {
   boot_command      = ["<tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rocky8-ext4.ks<enter><wait>"]
   qemuargs          = [
     [ "-m", "2048" ],
-    [ "--cpu", "kvm64" ]
+    [ "--cpu", "${var.cpu_flag}" ]
   ]
 }
 
