@@ -6,7 +6,7 @@ prepare:
 install_deps:
 	curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
 	apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main" && \
-	apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get -y install packer qemu-system-x86
+	apt-get update && sudo NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get -y install packer qemu-system-x86
 
 clean:
 	rm -rf images
