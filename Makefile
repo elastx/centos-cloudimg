@@ -1,4 +1,8 @@
-CPU_FLAG ?= host
+ifdef CPU_FLAG
+CPU_FLAG := $(CPU_FLAG)
+else
+MYVAR := host
+endif
 
 default: clean prepare
 
@@ -20,12 +24,12 @@ clean-packer:
 	rm -rf ${HOME}/.config/packer/
 
 build-centos-8:
-	PACKER_LOG=1 packer build centos-8.pkr.hcl -var cpu_flag=${CPU_FLAG}
+	PACKER_LOG=1 packer build -var cpu_flag="$(CPU_FLAG)" centos-8.pkr.hcl
 
 build-centos-9:
-	PACKER_LOG=1 packer build centos-9.pkr.hcl -var cpu_flag=${CPU_FLAG}
+	PACKER_LOG=1 packer build -var cpu_flag="$(CPU_FLAG)" centos-9.pkr.hcl
 
 build-rocky-8:
-	PACKER_LOG=1 packer build rocky-8.pkr.hcl -var cpu_flag=${CPU_FLAG}
+	PACKER_LOG=1 packer build -var cpu_flag="$(CPU_FLAG)" rocky-8.pkr.hcl
 
 all: clean clean-cache install_deps prepare
