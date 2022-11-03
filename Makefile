@@ -1,3 +1,5 @@
+CPU_FLAG ?= host
+
 default: clean prepare
 
 prepare:
@@ -18,12 +20,12 @@ clean-packer:
 	rm -rf ${HOME}/.config/packer/
 
 build-centos-8:
-	PACKER_LOG=1 packer build centos-8.pkr.hcl
+	PACKER_LOG=1 packer build centos-8.pkr.hcl -var cpu_flag=${CPU_FLAG}
 
 build-centos-9:
-	PACKER_LOG=1 packer build centos-9.pkr.hcl
+	PACKER_LOG=1 packer build centos-9.pkr.hcl -var cpu_flag=${CPU_FLAG}
 
 build-rocky-8:
-	PACKER_LOG=1 packer build rocky-8.pkr.hcl
+	PACKER_LOG=1 packer build rocky-8.pkr.hcl -var cpu_flag=${CPU_FLAG}
 
 all: clean clean-cache install_deps prepare
