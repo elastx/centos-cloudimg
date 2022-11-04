@@ -1,7 +1,7 @@
 ifdef CPU_FLAG
 CPU_FLAG := $(CPU_FLAG)
 else
-MYVAR := host
+CPU_FLAG := host
 endif
 
 default: clean prepare
