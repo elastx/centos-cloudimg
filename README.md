@@ -5,6 +5,7 @@ This git repo contain Packer and kickstart files to define and build CentOS clou
 - [centos8-ext4.ks](httpdir/centos8-ext4.ks) is based on the kickstart file used for building official CentOS 8 Stream cloud image ([source](https://git.centos.org/centos/kickstarts/blob/master/f/CentOS-8-Stream-GenericCloud.ks)).
 - [centos9-ext4.ks](httpdir/centos9-ext4.ks) is based on the kickstart file used for building official CentOS 9 Stream cloud image ([source](https://gitlab.com/redhat/centos-stream/release-engineering/kickstarts/-/blob/main/CentOS-Stream-9-kvm-x86_64.ks)).
 - [rocky8-ext4.ks](httpdir/rocky8-ext4.ks) is based on the kickstart file used for building official Rocky 8 images ([source](https://git.rockylinux.org/rocky/kickstarts/-/blob/r8/Rocky-8-GenericCloud.ks)).
+- [rocky9-ext4.ks](httpdir/rocky9-ext4.ks) is based on the kickstart file used for building official Rocky 8 images ([source](https://git.rockylinux.org/rocky/kickstarts/-/blob/r9/Rocky-9-GenericCloud.ks)).
 
 ## Prerequisites
 These prerequisites are written for Ubuntu 20.04.
