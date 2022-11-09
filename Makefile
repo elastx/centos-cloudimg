@@ -32,4 +32,7 @@ build-centos-9:
 build-rocky-8:
 	PACKER_LOG=1 packer build -var cpu_flag="$(CPU_FLAG)" rocky-8.pkr.hcl
 
+build-rocky-9:
+	PACKER_LOG=1 packer build -var cpu_flag="$(CPU_FLAG)" rocky-9.pkr.hcl
+
 all: clean clean-cache install_deps prepare
