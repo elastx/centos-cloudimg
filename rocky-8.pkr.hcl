@@ -1,7 +1,7 @@
 variable "iso_url" {
   type    = string
   // This can be a local file or URL
-  default = "https://download.rockylinux.org/pub/rocky/8/isos/x86_64/Rocky-8.6-x86_64-boot.iso"
+  default = "https://download.rockylinux.org/pub/rocky/8/isos/x86_64/Rocky-x86_64-boot.iso"
 }
 
 variable "iso_checksum" {
